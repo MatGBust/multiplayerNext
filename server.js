@@ -18,6 +18,7 @@ app.prepare().then(() => {
     console.log('New client connected');
 
     socket.on('joinRoom', ({ roomId, user }) => {
+      console.log(`${roomId} is the room ID and user: ${user} `);
       socket.join(roomId);
       if (!rooms[roomId]) {
         rooms[roomId] = { count: 0, users: [] };

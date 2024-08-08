@@ -14,11 +14,17 @@ let socket: Socket;
 export default function Room() {
   const { id } = useParams();
   const searchParams = useSearchParams();
-  const user = searchParams.get('user') || '';
   const [room, setRoom] = useState<RoomState>({ count: 0, users: [] });
+  const [user, setUser] = useState<String>('');
+
 
   useEffect(() => {
+    const testName = localStorage.getItem('user');
+    setUser(testName ? String(testName) : '');
+
     socket = io();
+
+    console.log(`User: ${user} joined`);
 
     if (id) {
       socket.emit('joinRoom', { roomId: id, user });
@@ -38,12 +44,14 @@ export default function Room() {
 
   const handleHome = () => {
     window.location.href = `/`;
+    socket.emit('')
   }
 
   return (
     <div>
         <button onClick={handleHome}>Go Home</button>
-      <h1>Room: {id}</h1>
+      <h1>Hi {user}!</h1>
+      <h1>Welcome to room {id}</h1>
       <h2>Count: {room.count}</h2>
       <button onClick={handleIncrement}>Increment</button>
       <h3>Users in room:</h3>
